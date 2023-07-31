@@ -30,6 +30,9 @@ func (controller *Controller) CreateAppointment(c *gin.Context) {
 		return
 	}
 
+	userId := c.GetInt("userID")
+	appointment.CreatedBy = userId
+
 	appointment.Create(controller.DB)
 }
 
@@ -60,7 +63,7 @@ func (controller *Controller) GetAppointmentById(c *gin.Context) {
 		return
 	}
 
-	result, err := model.GetOneAppointmentWithComments(controller.DB, uint(id))
+	result, err := model.GetOneAppointmentWithComments(controller.DB, int(id))
 	if err != nil {
 		log.Fatal(err)
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -115,7 +118,7 @@ func (controller *Controller) ArchiveAppointment(c *gin.Context) {
 		return
 	}
 
-	oldData, err := model.GetOneAppointment(controller.DB, uint(id))
+	oldData, err := model.GetOneAppointment(controller.DB, int(id))
 	if err != nil {
 		// todo: cleanup message
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

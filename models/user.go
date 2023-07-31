@@ -5,19 +5,19 @@ import (
 )
 
 type User struct {
-	ID           uint          `gorm:"primaryKey;autoIncrement" json:"id"`
-	Username     string        `gorm:"not null" json:"username"`
-	Password     string        `gorm:"not null" json:"-"`
+	ID           int           `gorm:"primaryKey;autoIncrement" json:"-"`
+	DisplayName  string        `gorm:"not null" json:"displayName"`
 	Email        string        `json:"email" validate:"required,email"`
 	AvatarURL    string        `json:"avatar"`
-	Appointments []Appointment `gorm:"foreignKey:created_by" json:"-"`
+	Appointments []Appointment `gorm:"foreignKey:CreatedBy" json:"-"`
 	Comments     []Comment     `gorm:"foreignKey:UserID" json:"-"`
+	// Password     string        `gorm:"not null" json:"-"`
 }
 
 func GetAllUsers(db *gorm.DB, page int) (*[]User, error) {
 	users := []User{}
 
-	res := db.Select("username", "email").Find(&users)
+	res := db.Find(&users)
 	if res.Error != nil {
 		return nil, res.Error
 	}

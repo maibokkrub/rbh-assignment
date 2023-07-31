@@ -6,15 +6,18 @@ import (
 )
 
 type CreateUserDTO struct {
-	Username  string `validate:"required,min=2,max=50"`
-	Password  string `validate:"required"`
-	Email     string `validate:"required,email"`
-	AvatarURL string
+	DisplayName string `validate:"required,min=2,max=50" json:"displayName"`
+	Password    string `validate:"required"`
+	Email       string `validate:"required,email"`
+	AvatarURL   string `json:"avatar"`
 }
 
 type LoginUserDTO struct {
 	Email    string `validate:"required,email"`
 	Password string
+}
+type FakeLoginDTO struct {
+	ID int `json:"userID"`
 }
 
 func (d *CreateUserDTO) ToModel() (*model.User, error) {
@@ -26,12 +29,12 @@ func (d *CreateUserDTO) ToModel() (*model.User, error) {
 	}
 
 	// todo: implement bcrypt hashing for password
-	password := d.Password
+	// password := d.Password
 
 	return &model.User{
-		Username:  d.Username,
-		Email:     d.Email,
-		Password:  password,
+		DisplayName: d.DisplayName,
+		Email:       d.Email,
+		// Password:    password,
 		AvatarURL: d.AvatarURL,
 	}, nil
 }
@@ -45,10 +48,10 @@ func (d *LoginUserDTO) ToModel() (*model.User, error) {
 	}
 
 	// todo: implement bcrypt hashing for password
-	password := d.Password
+	// password := d.Password
 
 	return &model.User{
-		Email:    d.Email,
-		Password: password,
+		Email: d.Email,
+		// Password: password,
 	}, nil
 }

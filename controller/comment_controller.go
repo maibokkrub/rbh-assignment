@@ -29,6 +29,11 @@ func (controller *Controller) CreateComment(c *gin.Context) {
 		return
 	}
 
+	userId := c.GetInt("userID")
+	print("userId controller ", userId)
+	// comment.Creator.ID = userId
+	comment.UserID = userId
+
 	comment.Create(controller.DB)
 }
 

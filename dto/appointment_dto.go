@@ -10,19 +10,18 @@ import (
 type CreateAppointmentDTO struct {
 	Title       string `json:"title" validate:"required,min=2,max=100"`
 	Description string `json:"description"`
-	CreatedBy   uint   `json:"createdBy"`
 }
 
 type UpdateAppointmentDTO struct {
-	ID          uint   `json:"id" validate:"required"`
+	ID          int    `json:"id" validate:"required"`
 	Title       string `json:"title" validate:"required,min=2,max=100"`
 	Description string `json:"description"`
-	Status      uint8  `json:"status"`
+	Status      int8   `json:"status"`
 }
 
 type SetAppointmentStatusDTO struct {
-	ID     uint
-	Status uint8 `json:"status" validate:"min=1,max=3"`
+	ID     int
+	Status int8 `json:"status" validate:"min=1,max=3"`
 }
 
 func (d *CreateAppointmentDTO) ToModel() (*model.Appointment, error) {
@@ -36,7 +35,6 @@ func (d *CreateAppointmentDTO) ToModel() (*model.Appointment, error) {
 	return &model.Appointment{
 		Title:       d.Title,
 		Description: d.Description,
-		CreatedBy:   d.CreatedBy,
 	}, nil
 }
 

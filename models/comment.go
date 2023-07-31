@@ -7,11 +7,12 @@ import (
 )
 
 type Comment struct {
-	ID            uint   `gorm:"primaryKey;autoIncrement" json:"-"`
-	AppointmentID uint   `gorm:"indexed" json:"appointmentId"`
-	UserID        uint   `gorm:"foreignKey:ID" json:"-"`
+	gorm.Model
+
+	AppointmentID int    `gorm:"indexed" json:"-"`
+	UserID        int    `gorm:"foreignKey:ID" json:"-"`
 	Body          string `gorm:"text" json:"body"`
-	Creator       User   `gorm:"foreignKey:ID" json:"creator"`
+	Creator       User   `gorm:"foreignKey:UserID" json:"creator"`
 }
 
 //

@@ -8,23 +8,18 @@ import (
 	"gorm.io/gorm"
 )
 
-// Status
-// 0 => archived
-// 1 => TO DO
-// 2 => In progress
-// 3 => Done
-
 type Appointment struct {
-	ID          uint           `gorm:"primaryKey;autoIncrement" json:"id"`
+	// gorm.Model
+	ID          int            `gorm:"primaryKey;autoIncrement" json:"id"`
 	Title       string         `gorm:"not null" json:"title" validate:"required,min=2,max=100"`
 	Description string         `gorm:"text" json:"description"`
-	Status      uint8          `gorm:"default:1" json:"status" validate:"min=0,max=4"`
-	Comments    []Comment      `gorm:"foreignKey:appointment_id" json:"comments"`
-	CreatedBy   uint           `json:"-"`
-	Creator     User           `gorm:"foreignKey:ID" json:"creator"`
+	Status      int8           `gorm:"default:1" json:"status" validate:"min=0,max=4"`
+	CreatedBy   int            `json:"-"`
+	Creator     User           `gorm:"foreignKey:ID;references:CreatedBy" json:"creator"`
 	CreatedAt   time.Time      `gorm:"default:CURRENT_TIMESTAMP" json:"createdAt"`
 	UpdatedAt   time.Time      `gorm:"default:CURRENT_TIMESTAMP" json:"updatedAt"`
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"-"`
+	Comments    []Comment      `gorm:"foreignKey:AppointmentID" json:"comments"`
 }
 
 func GetAllAppointment(db *gorm.DB, page int) (*[]Appointment, error) {
@@ -38,7 +33,7 @@ func GetAllAppointment(db *gorm.DB, page int) (*[]Appointment, error) {
 	return &appointments, nil
 }
 
-func GetOneAppointment(db *gorm.DB, id uint) (*Appointment, error) {
+func GetOneAppointment(db *gorm.DB, id int) (*Appointment, error) {
 	appointment := Appointment{}
 
 	res := db.First(&appointment, id)
@@ -48,10 +43,10 @@ func GetOneAppointment(db *gorm.DB, id uint) (*Appointment, error) {
 	return &appointment, nil
 }
 
-func GetOneAppointmentWithComments(db *gorm.DB, id uint) (*Appointment, error) {
+func GetOneAppointmentWithComments(db *gorm.DB, id int) (*Appointment, error) {
 	appointment := Appointment{}
 
-	res := db.Preload("Comments").First(&appointment, id)
+	res := db.Preload("Comments").Preload("Users").First(&appointment, id)
 	if res.Error != nil {
 		if errors.Is(res.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -85,7 +80,8 @@ func (appointment *Appointment) Update(db *gorm.DB) (*gorm.DB, error) {
 }
 
 func (appointment *Appointment) SoftDelete(db *gorm.DB) (*gorm.DB, error) {
-	res := db.Debug().Delete(appointment)
+	db.DB()
+	res := db.Delete(appointment)
 	if res.Error != nil {
 		return nil, res.Error
 	}

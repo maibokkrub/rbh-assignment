@@ -6,9 +6,8 @@ import (
 )
 
 type CreateCommentDTO struct {
-	AppointmentId uint   `json:"appointmentId" validate:"required"`
+	AppointmentId int    `json:"appointmentId" validate:"required"`
 	Comment       string `json:"comment" validate:"required"`
-	CreatedBy     uint   `json:"creator" validate:"required"`
 }
 
 func (d *CreateCommentDTO) ToModel() (*model.Comment, error) {
@@ -22,6 +21,5 @@ func (d *CreateCommentDTO) ToModel() (*model.Comment, error) {
 	return &model.Comment{
 		AppointmentID: d.AppointmentId,
 		Body:          d.Comment,
-		UserID:        d.CreatedBy,
 	}, nil
 }
