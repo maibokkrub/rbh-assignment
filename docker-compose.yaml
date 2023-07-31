@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  app:
+    container_name: api
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+    build:
+      context: .
+      dockerfile: ./deployments/dev.Dockerfile
+    volumes:
+      - ".:/app"
+    ports:
+      - 8080:8080
+    restart: on-failure
+    depends_on:
+      - db
+    networks:
+      - rbh_app_network
+
+  db:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
+    ports:
+      - '5432:5432'
+    networks:
+      - rbh_app_network
+
+networks:
+  rbh_app_network:
+    driver: bridge
