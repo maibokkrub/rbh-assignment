@@ -17,15 +17,15 @@ Only listing the bare minimum required by the wire frame assuming all extra func
 | ------ | --------------------------- | --------------- |
 | GET    | all appointments, paginated | Appointments[]  |
 | GET    | specific appointment        | Appointment     |
-| PATCH  | appointment status          | update feedback |
+| PATCH  | appointment details/status          | update feedback |
 | PATCH  | archive appointment         | update feedback |
 
 ### Comments actions
 
-| Action | Object                                       | Return      |
-| ------ | -------------------------------------------- | ----------- |
-| GET    | all comments for an Appointment, (paginated) | Comments[]  |
-| POST   | new comment                                  | Appointment |
+| Action | Object                                       | Return      | Status
+| ------ | -------------------------------------------- | ----------- | ---- 
+| GET    | all comments for an Appointment, (paginated) | Comments[]  | Done with no pagination
+| POST   | new comment                                  |  | 
 
 ## Data Interface
 
@@ -33,16 +33,16 @@ Only listing the bare minimum required by the wire frame assuming all extra func
 
 | Name  | Type   | Description                         |
 | ----- | ------ | ----------------------------------- |
-| uuid  | string | user's identifier                   |
+| id  | int | user's identifier                   |
 | name  | string | name shown on all pages             |
-| image | string | profile image url                   |
+| avatar | string | profile image url                   |
 | email | string | user's email shown in detailed card |
 
 ### Appointment Entity
 
 | Name    | Type   | Description                  |
 | ------- | ------ | ---------------------------- |
-| uuid    | string | appointment's identifier     |
+| id    | string | appointment's identifier     |
 | details | string | text shown in the boxes      |
 | status  | enum   |
 | email   | string | email shown in detailed view |
@@ -54,7 +54,6 @@ Only listing the bare minimum required by the wire frame assuming all extra func
 | TODO        |
 | IN_PROGRESS |
 | DONE        |
-| ARCHIVED    | Not shown in all appointments |
 
 transition from todo -> in_progress -> done
 
