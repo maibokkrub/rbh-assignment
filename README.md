@@ -1,14 +1,19 @@
 # Simple Web app
 
+I made it to run with SQLite for dev, if you'd like to use it with postgres feel free to spin up the docker-compose file, and toggle the code from line 17-25 and 27-30 in main.go krub.
+
 ## Endpoints
 
-BASE_URL = "http://localhost:8080"
+BASE_URL = `http://localhost:8080`
+
+_Postman Collections available at ./postman_
 
 ### Public Endpoints
 
-URL | Method | Description
-/ping | GET | Check status
-/login | POST |returns a jwt string
+| URL    | Method | Description          |
+| ------ | ------ | -------------------- |
+| /ping  | GET    | Check status         |
+| /login | POST   | returns a jwt string |
 
 ### Private Endpoints /api/\*
 
@@ -50,5 +55,14 @@ PATCH /api/v1/appointment/:id
   "title": "title007",
   "description": "desc 07",
   "status": 2
+}
+```
+
+POST /api/v1/appointment/comment
+
+```json
+{
+  "appointmentId": 1,
+  "comment": "test comment2 by user 3"
 }
 ```
