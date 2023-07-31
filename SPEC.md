@@ -17,44 +17,40 @@ Only listing the bare minimum required by the wire frame assuming all extra func
 | ------ | --------------------------- | --------------- |
 | GET    | all appointments, paginated | Appointments[]  |
 | GET    | specific appointment        | Appointment     |
-| PATCH  | appointment details/status          | update feedback |
+| PATCH  | appointment details/status  | update feedback |
 | PATCH  | archive appointment         | update feedback |
 
 ### Comments actions
 
-| Action | Object                                       | Return      | Status
-| ------ | -------------------------------------------- | ----------- | ---- 
-| GET    | all comments for an Appointment, (paginated) | Comments[]  | Done with no pagination
-| POST   | new comment                                  |  | 
+| Action | Object                                       | Return     | Status                  |
+| ------ | -------------------------------------------- | ---------- | ----------------------- |
+| GET    | all comments for an Appointment, (paginated) | Comments[] | Done with no pagination |
+| POST   | new comment                                  |            |
 
 ## Data Interface
 
 ### User Entity
 
-| Name  | Type   | Description                         |
-| ----- | ------ | ----------------------------------- |
-| id  | int | user's identifier                   |
-| name  | string | name shown on all pages             |
+| Name   | Type   | Description                         |
+| ------ | ------ | ----------------------------------- |
+| id     | int    | user's identifier                   |
+| name   | string | name shown on all pages             |
 | avatar | string | profile image url                   |
-| email | string | user's email shown in detailed card |
+| email  | string | user's email shown in detailed card |
 
 ### Appointment Entity
 
 | Name    | Type   | Description                  |
 | ------- | ------ | ---------------------------- |
-| id    | string | appointment's identifier     |
+| id      | string | appointment's identifier     |
 | details | string | text shown in the boxes      |
 | status  | enum   |
 | email   | string | email shown in detailed view |
 
 ### Status Enum
 
-| Name        | Description                   |
-| ----------- | ----------------------------- |
+| Name        | Description |
+| ----------- | ----------- |
 | TODO        |
 | IN_PROGRESS |
 | DONE        |
-
-transition from todo -> in_progress -> done
-
-_todo: maybe enforce the state transition in BE?_
